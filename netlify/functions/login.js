@@ -18,6 +18,13 @@ exports.handler = async (event, context) => {
                 day_date DATE NOT NULL,
                 UNIQUE(user_id, day_date)
             )`;
+            await sql`CREATE TABLE IF NOT EXISTS daily_quests (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id),
+                quest_id INTEGER NOT NULL,
+                day_date DATE NOT NULL,
+                UNIQUE(user_id, quest_id, day_date)
+            )`;
             
             // v0.9.0: Remove Ramnhell check-in for 2026-04-13
             await sql`DELETE FROM check_ins WHERE user_id = (SELECT id FROM users WHERE name = 'Ramnhell' LIMIT 1) AND day_date = '2026-04-13'`;

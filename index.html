@@ -8,6 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>h a v e n</title>
     <link rel="icon" type="image/jpeg" href="assets/favicon/favicon">
+    <link rel="apple-touch-icon" href="assets/favicon/favicon">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,6 +21,7 @@
                 <div id="profile-btn">
                     <div id="profile-pic"></div>
                 </div>
+                <div id="quest-btn" style="display:none;">Q</div>
                 <div class="hud-top">
                     <div class="stat-row">
                         <span class="stat-label">Level <span id="val-level">1</span></span>
@@ -52,15 +54,25 @@
                 </div>
                 <h3 style="color:#00ccff; font-weight:300; font-size:14px; letter-spacing:2px; margin-bottom:15px;">Daily Attendance</h3>
                 <div id="calendar-grid"></div>
-                <button id="btn-checkin" disabled>CHECK IN</button>
+                <div style="clear:both;"></div>
+                <button id="btn-checkin" disabled style="margin-top:20px;">CHECK IN</button>
                 <button id="btn-close-checkin">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Quest Modal -->
+        <div id="quest-overlay" class="modal-overlay" style="display:none;">
+            <div class="modal-content">
+                <h2>Daily Quests</h2>
+                <div id="quest-list" style="text-align:left; margin-bottom:20px;"></div>
+                <button id="btn-close-quest">CLOSE</button>
             </div>
         </div>
 
         <!-- Centered UI Overlay -->
         <div id="ui-layout">
             <div id="splash-screen">
-                <div class="version-tag">v0.10.2</div>
+                <div class="version-tag">v0.12.0</div>
                 <h1 id="game-title">h a v e n</h1>
                 <p id="game-status">Connecting to Bridge...</p>
                 
@@ -106,9 +118,9 @@
             <div id="chat-box">
                 <input type="text" id="chat-input" placeholder="Type here..." maxlength="50">
             </div>
-            <div id="version-display">v0.10.2</div>
+            <div id="version-display">v0.12.0</div>
         </div>
     </div>
-    <script src="game.js?v=0.10.2"></script>
+    <script src="game.js?v=0.12.0"></script>
 </body>
 </html>

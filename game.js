@@ -155,9 +155,11 @@
             document.getElementById("splash-screen").style.opacity = "0";
             document.getElementById("splash-screen").style.pointerEvents = "none";
             
-            // Daily Check-in Logic - Only auto-show if not checked in
+            // Daily Check-in & Quest Logic
             if (!user.checkedInToday) {
                 showCheckin();
+            } else {
+                checkAutoQuest();
             }
         }, isAutoLogin ? 500 : 2000);
 
@@ -317,12 +319,19 @@
             input.blur();
         }
 
-        // Attendance / Profile / Debug
+        // Attendance / Profile / Quests / Debug
         document.getElementById("profile-btn").addEventListener("click", showCheckin);
         document.getElementById("btn-close-checkin").addEventListener("click", function() {
             document.getElementById("checkin-overlay").style.display = "none";
+            checkAutoQuest();
         });
         document.getElementById("btn-checkin").addEventListener("click", handleCheckin);
+        
+        document.getElementById("quest-btn").addEventListener("click", showQuests);
+        document.getElementById("quest-btn").style.display = "flex";
+        document.getElementById("btn-close-quest").addEventListener("click", function() {
+            document.getElementById("quest-overlay").style.display = "none";
+        });
         
         document.getElementById("btn-debug-reset").addEventListener("click", function() {
             var xhr = new XMLHttpRequest();
@@ -355,7 +364,7 @@
                 var dailyStr = data.dailyGoalsTotal > 0 ? (data.dailyGoalsDone + "/" + data.dailyGoalsTotal) : "0/0";
                 
                 var narrative = "<b>" + data.name + "</b> (" + pronouns + ") is on a <b>" + data.streak + "-day streak</b>.<br><br>";
-                narrative += pronounSubject + " has logged in <b>" + data.totalLogins + " times</b> and achieved a total of <b>" + data.totalGoalsAchieved + " goals</b> in their lifetime. ";
+                narrative += pronounSubject + " has checked in <b>" + data.totalLogins + " times</b> and achieved a total of <b>" + data.totalGoalsAchieved + " goals</b> in their lifetime. ";
                 narrative += "Today, they achieved <b>" + dailyStr + "</b> of their daily goals.";
                 
                 document.getElementById("profile-narrative").innerHTML = narrative;
@@ -424,6 +433,115 @@
         var isDone = (checkedDays.indexOf(today) !== -1);
         document.getElementById("btn-checkin").style.display = isDone ? "none" : "block";
         document.getElementById("btn-checkin").disabled = false;
+    }
+
+    // --- Quest System ---
+    function checkAutoQuest() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/getQuests?userId=" + gameState.user.id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                var uncompleted = data.quests.filter(function(q) { return !q.completed; });
+                if (uncompleted.length > 0) {
+                    renderQuests(data.quests);
+                    document.getElementById("quest-overlay").style.display = "flex";
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function showQuests() {
+        if (!gameState.authenticated) return;
+        document.getElementById("quest-overlay").style.display = "flex";
+        document.getElementById("quest-list").innerHTML = "Loading...";
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/getQuests?userId=" + gameState.user.id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                renderQuests(data.quests);
+            }
+        };
+        xhr.send();
+    }
+
+    function renderQuests(quests) {
+        var list = document.getElementById("quest-list");
+        list.innerHTML = "";
+        
+        quests.forEach(function(q) {
+            var item = document.createElement("div");
+            item.className = "quest-item" + (q.completed ? " completed" : "");
+            
+            var titleSpan = document.createElement("span");
+            titleSpan.innerHTML = q.title + " <b>(+" + q.gold + " G)</b>";
+            item.appendChild(titleSpan);
+            
+            if (!q.completed) {
+                var btn = document.createElement("button");
+                btn.className = "btn-complete-quest";
+                btn.innerHTML = "Finish";
+                btn.onclick = function() { completeQuest(q.id, q.gold, btn, item); };
+                item.appendChild(btn);
+            } else {
+                var doneSpan = document.createElement("span");
+                doneSpan.innerHTML = "✓ Done";
+                doneSpan.style.color = "#00ff88";
+                doneSpan.style.fontSize = "12px";
+                item.appendChild(doneSpan);
+            }
+            
+            list.appendChild(item);
+        });
+    }
+
+    function completeQuest(questId, gold, btnNode, itemNode) {
+        btnNode.disabled = true;
+        btnNode.innerHTML = "...";
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/completeQuest", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                gameState.gold = data.gold;
+                updateHUD();
+                
+                // Update UI state
+                itemNode.className = "quest-item completed";
+                itemNode.removeChild(btnNode);
+                var doneSpan = document.createElement("span");
+                doneSpan.innerHTML = "✓ Done";
+                doneSpan.style.color = "#00ff88";
+                doneSpan.style.fontSize = "12px";
+                itemNode.appendChild(doneSpan);
+                
+                showFloatingGold("+" + gold + " Gold!");
+            }
+        };
+        xhr.send(JSON.stringify({ userId: gameState.user.id, questId: questId, goldReward: gold }));
+    }
+
+    function showFloatingGold(text) {
+        var floater = document.createElement("div");
+        floater.className = "floating-gold";
+        floater.innerHTML = text;
+        
+        // Center of screen
+        floater.style.left = "45%";
+        floater.style.top = "40%";
+        
+        document.getElementById("game-container").appendChild(floater);
+        
+        setTimeout(function() {
+            if (floater.parentNode) {
+                floater.parentNode.removeChild(floater);
+            }
+        }, 1000);
     }
 
     function handleLogin() {

@@ -31,3 +31,11 @@ CREATE TABLE IF NOT EXISTS habits (
     streak INTEGER DEFAULT 0,
     last_completed TIMESTAMP WITH TIME ZONE
 );
+
+CREATE TABLE IF NOT EXISTS daily_quests (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    quest_id INTEGER NOT NULL,
+    day_date DATE NOT NULL,
+    UNIQUE(user_id, quest_id, day_date)
+);

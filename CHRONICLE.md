@@ -205,6 +205,15 @@
     - Legacy Layout: Offset the central HUD blocks (`.hud-top`) slightly to the right to accommodate the new absolute element, preventing any overlapping on the iPad Mini screen.
     - Stamped `v0.10.2` across the splash scripts to ensure strict fresh cache fetches.
 
+### v0.12.0 - Quest System & Legacy UI Fix
+- **Features:**
+    - Quest Economy: Added a gender-mapped 'Daily Quests' modal. Quests reward static Gold and are automatically shown upon login if unachieved goals exist.
+    - Animation: Implemented a 1-second floating `+X Gold!` animation triggered centrally on the screen upon quest completion.
+- **Fixes:**
+    - Calendar Grid: Swapped flex/grid CSS for standard floating blocks `display: block; float: left; width: 12%;` to prevent single-column stacking bugs on iPad Mini 1 (iOS 9).
+    - Web PWA Hooks: Added `<link rel="apple-touch-icon">` bound to favicon.jpeg to enforce accurate Add-to-Homescreen application icons.
+    - Updated narrative string from "logged in" to "checked in".
+
 ---
 
 ## 🚀 Next Steps
