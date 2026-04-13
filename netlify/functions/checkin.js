@@ -9,20 +9,20 @@ exports.handler = async (event, context) => {
         const { userId } = JSON.parse(event.body);
         const sql = neon(process.env.DATABASE_URL);
 
-        // check if already checked in today
+        // check if already checked in today (GMT+8)
         const existing = await sql`
             SELECT id FROM check_ins 
-            WHERE user_id = ${userId} AND day_date = CURRENT_DATE
+            WHERE user_id = ${userId} AND day_date = (NOW() AT TIME ZONE 'Asia/Manila')::date
         `;
 
         if (existing.length > 0) {
             return { statusCode: 400, body: JSON.stringify({ error: 'Already checked in today' }) };
         }
 
-        // Add check-in
+        // Add check-in (GMT+8)
         await sql`
             INSERT INTO check_ins (user_id, day_date)
-            VALUES (${userId}, CURRENT_DATE)
+            VALUES (${userId}, (NOW() AT TIME ZONE 'Asia/Manila')::date)
         `;
 
         // Add spin reward

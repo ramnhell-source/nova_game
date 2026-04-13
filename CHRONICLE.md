@@ -162,6 +162,12 @@
 - **Optimization:**
     - Adjusted movement sync back to **500ms** to ensure stability on Neon's free tier connection limits.
 
+### v0.7.3 - Timezone Correction (GMT+8)
+- **Fixes:**
+    - Enforced **Asia/Manila (GMT+8)** for all check-in database operations to prevent UTC date mismatch.
+    - Updated frontend calendar logic to calculate "today" in PH time, ensuring consistent green/red marking.
+    - Optimized date string parsing for **iOS 9.3.2** (Strict ES5 compatibility).
+
 ---
 
 ## 🚀 Next Steps

@@ -36,10 +36,10 @@ exports.handler = async (event, context) => {
 
         const user = result[0];
 
-        // Check if checked in today
+        // Check if checked in today (GMT+8)
         const checkins = await sql`
             SELECT 1 FROM check_ins 
-            WHERE user_id = ${user.id} AND day_date = CURRENT_DATE
+            WHERE user_id = ${user.id} AND day_date = (NOW() AT TIME ZONE 'Asia/Manila')::date
         `;
         user.checkedInToday = checkins.length > 0;
 

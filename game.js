@@ -337,13 +337,22 @@
         var grid = document.getElementById("calendar-grid");
         grid.innerHTML = "";
         
+        // Force GMT+8 (Philippines) for "today"
         var now = new Date();
-        var daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-        var today = now.getDate();
+        var utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        var phTime = new Date(utc + (3600000 * 8));
+        
+        var year = phTime.getFullYear();
+        var month = phTime.getMonth();
+        var today = phTime.getDate();
+        
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
 
         // Convert checkedDates to just days
         var checkedDays = checkedDates.map(function(d) {
-            return new Date(d).getDate();
+            // Input: "YYYY-MM-DD..."
+            var parts = d.split("T")[0].split("-");
+            return parseInt(parts[2], 10);
         });
 
         for (var i = 1; i <= daysInMonth; i++) {
