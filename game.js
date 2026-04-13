@@ -144,8 +144,33 @@
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
-                // Pre-load images for others if needed, but here we just map them
-                otherPlayers = data.players;
+                var activePlayers = data.players;
+                
+                // Preserve current positions for interpolation
+                for (var i = 0; i < activePlayers.length; i++) {
+                    var p = activePlayers[i];
+                    var existing = findOtherPlayer(p.id);
+                    if (existing) {
+                        existing.targetX = p.pos_x;
+                        existing.targetY = p.pos_y;
+                        existing.name = p.name;
+                        existing.gender = p.gender;
+                    } else {
+                        p.currentX = p.pos_x;
+                        p.currentY = p.pos_y;
+                        p.targetX = p.pos_x;
+                        p.targetY = p.pos_y;
+                        otherPlayers.push(p);
+                    }
+                }
+
+                // Cleanup inactive
+                otherPlayers = otherPlayers.filter(function(op) {
+                    for (var j = 0; j < activePlayers.length; j++) {
+                        if (activePlayers[j].id === op.id) return true;
+                    }
+                    return false;
+                });
             }
         };
 
@@ -155,7 +180,14 @@
             y: Math.floor(player.y)
         }));
 
-        setTimeout(startHeartbeat, 3000);
+        setTimeout(startHeartbeat, 1000); // Faster sync
+    }
+
+    function findOtherPlayer(id) {
+        for (var i = 0; i < otherPlayers.length; i++) {
+            if (otherPlayers[i].id === id) return otherPlayers[i];
+        }
+        return null;
     }
 
     function setupControls() {
@@ -168,6 +200,8 @@
                 return;
             }
             keys[e.keyCode] = true;
+            
+            // Movement Direction
             if (e.keyCode === 65) player.flip = true;
             if (e.keyCode === 68) player.flip = false;
         });
@@ -203,7 +237,6 @@
         btnR.addEventListener("touchstart", function(e) { e.preventDefault(); handleBtn(68, true, false); });
         btnR.addEventListener("touchend", function() { handleBtn(68, false, false); });
         
-        // Mouse fallback for mobile testing
         btnL.addEventListener("mousedown", function() { handleBtn(65, true, true); });
         btnL.addEventListener("mouseup", function() { handleBtn(65, false, true); });
         btnR.addEventListener("mousedown", function() { handleBtn(68, true, false); });
@@ -286,13 +319,18 @@
         if (player.y > height - player.size) player.y = height - player.size;
     }
 
-    function drawSprite(img, x, y, flip, name) {
+    function drawSprite(img, x, y, flip, name, gender) {
         var drawWidth = 64;
         var drawHeight = (img.height / img.width) * drawWidth;
         
         ctx.save();
         ctx.translate(x, y);
-        if (flip) ctx.scale(-1, 1);
+
+        // Fix: Male sprite in this project is facing left by default
+        var activeFlip = flip;
+        if (gender === "male") activeFlip = !flip;
+
+        if (activeFlip) ctx.scale(-1, 1);
         
         ctx.shadowBlur = 15;
         ctx.shadowColor = "rgba(0, 204, 255, 0.5)";
@@ -321,16 +359,21 @@
         if (gameState.authenticated) {
             updateMovement();
             
-            // Draw Others
+            // Draw Others with Interpolation
             for (var i = 0; i < otherPlayers.length; i++) {
                 var p = otherPlayers[i];
+                
+                // Smoothing (Lerp)
+                p.currentX += (p.targetX - p.currentX) * 0.1;
+                p.currentY += (p.targetY - p.currentY) * 0.1;
+
                 var img = p.gender === "male" ? maleSpriteImg : femaleSpriteImg;
-                drawSprite(img, p.pos_x, p.pos_y, false, p.name);
+                drawSprite(img, p.currentX, p.currentY, false, p.name, p.gender);
             }
 
             // Draw Self
             var myImg = gameState.user.gender === "male" ? maleSpriteImg : femaleSpriteImg;
-            drawSprite(myImg, player.x, player.y, player.flip, gameState.user.name);
+            drawSprite(myImg, player.x, player.y, player.flip, gameState.user.name, gameState.user.gender);
         }
         
         requestAnimationFrame(animate);
