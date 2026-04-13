@@ -88,7 +88,24 @@
         if (savedUser) {
             try {
                 var userData = JSON.parse(savedUser);
-                loginSuccess(userData);
+                document.getElementById("splash-screen").style.display = "block";
+                document.getElementById("rpg-hud").style.display = "none";
+                document.getElementById("auth-box").style.display = "none";
+                document.getElementById("game-status").innerHTML = "Resuming session...";
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/api/login", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            loginSuccess(JSON.parse(xhr.responseText), true);
+                        } else {
+                            showAuth();
+                        }
+                    }
+                };
+                xhr.send(JSON.stringify({ name: userData.name, pin: userData.pin }));
             } catch(e) { 
                 console.error("Session Corrupt"); 
                 showAuth();
@@ -104,7 +121,7 @@
         document.getElementById("auth-box").style.display = "block";
     }
 
-    function loginSuccess(user) {
+    function loginSuccess(user, isAutoLogin) {
         gameState.authenticated = true;
         gameState.user = user;
         player.id = user.id;
@@ -114,6 +131,11 @@
         gameState.xp = user.xp || 0;
         gameState.gold = user.gold || 0;
         gameState.spins = user.spins || 0;
+
+        // Debug tools for testagent
+        if (user.name === "testagent") {
+            document.getElementById("btn-debug-reset").style.display = "inline-block";
+        }
 
         document.getElementById("auth-box").style.display = "none";
         document.getElementById("game-status").innerHTML = "Welcome back, " + user.name;
@@ -133,11 +155,11 @@
             document.getElementById("splash-screen").style.opacity = "0";
             document.getElementById("splash-screen").style.pointerEvents = "none";
             
-            // Daily Check-in Logic
+            // Daily Check-in Logic - Only auto-show if not checked in
             if (!user.checkedInToday) {
                 showCheckin();
             }
-        }, 2000);
+        }, isAutoLogin ? 500 : 2000);
 
         startHeartbeat();
         updateHUD();
@@ -295,12 +317,25 @@
             input.blur();
         }
 
-        // Attendance / Profile
+        // Attendance / Profile / Debug
         document.getElementById("profile-btn").addEventListener("click", showCheckin);
         document.getElementById("btn-close-checkin").addEventListener("click", function() {
             document.getElementById("checkin-overlay").style.display = "none";
         });
         document.getElementById("btn-checkin").addEventListener("click", handleCheckin);
+        
+        document.getElementById("btn-debug-reset").addEventListener("click", function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/resetCheckin", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert("Debug: Attendance reset for today.");
+                    location.reload();
+                }
+            };
+            xhr.send(JSON.stringify({ userId: gameState.user.id }));
+        });
     }
 
     function showCheckin() {

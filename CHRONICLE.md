@@ -175,6 +175,15 @@
 - **Optimization:**
     - UI UX: The `CHECK IN` button is now explicitly disabled while awaiting the API response, only enabling when the calendar is fully constructed, mitigating duplicate requests.
 
+### v0.9.0 - Smart Attendance & Debug Mode
+- **Features:**
+    - Authentication Flow: The "Remember Me" function now quietly re-authenticates with the API in the background. This guarantees the `checkedInToday` status is perfectly accurate without a hard reload.
+    - Conditional Calendar: The Attendance Modal only appears automatically if the user hasn't checked in yet. It correctly stays hidden if already checked in, but remains accessible via the Profile Button.
+- **Debug Tools:**
+    - Introduced a special UI for the account `testagent`.
+    - Added an API endpoint `resetCheckin.js` bound to a 'DEBUG: RESET TODAY' hud button, allowing the testagent to purge their today's record and test the popup flow infinitely.
+    - Admin DB execution added to manually remove Ramnhell's `2026-04-13` attendance upon login migration.
+
 ---
 
 ## 🚀 Next Steps
