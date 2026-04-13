@@ -199,6 +199,12 @@
     - Version Sync: Added cache-busting to the script import (`game.js?v=0.10.1`) to ensure Netlify delivers the latest build to all devices.
     - Updated HUD and Splash screen to `v0.10.1`.
 
+### v0.10.2 - Profile Button Position Fix
+- **Fixes:**
+    - Absolute Alignment: Migrated the Profile Button out of the flex container and into `position: absolute; top: 10px; left: 10px; z-index: 1000` to correctly pin it to the top-left on all devices.
+    - Legacy Layout: Offset the central HUD blocks (`.hud-top`) slightly to the right to accommodate the new absolute element, preventing any overlapping on the iPad Mini screen.
+    - Stamped `v0.10.2` across the splash scripts to ensure strict fresh cache fetches.
+
 ---
 
 ## 🚀 Next Steps
