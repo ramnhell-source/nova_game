@@ -192,6 +192,13 @@
 - **Infrastructure:**
     - Created a new `/api/getProfile` endpoint that calculates streaks based on consecutive `check_ins` dates and aggregates historical `habits` data from Neon DB.
 
+### v0.10.1 - Deployment Sync & Logout Implementation
+- **Features:**
+    - Navigation: Implemented a strict absolute top-right glassmorphism **Logout Button**.
+- **Fixes:**
+    - Version Sync: Added cache-busting to the script import (`game.js?v=0.10.1`) to ensure Netlify delivers the latest build to all devices.
+    - Updated HUD and Splash screen to `v0.10.1`.
+
 ---
 
 ## 🚀 Next Steps
