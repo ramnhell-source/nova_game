@@ -344,10 +344,23 @@
         document.getElementById("btn-checkin").disabled = true; // Disable until load
         
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/api/getCheckins?userId=" + gameState.user.id, true);
+        xhr.open("GET", "/api/getProfile?userId=" + gameState.user.id, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
+                
+                // Construct narrative
+                var pronouns = data.gender === "male" ? "He/Him" : "She/Her";
+                var pronounSubject = data.gender === "male" ? "He" : "She";
+                var dailyStr = data.dailyGoalsTotal > 0 ? (data.dailyGoalsDone + "/" + data.dailyGoalsTotal) : "0/0";
+                
+                var narrative = "<b>" + data.name + "</b> (" + pronouns + ") is on a <b>" + data.streak + "-day streak</b>.<br><br>";
+                narrative += pronounSubject + " has logged in <b>" + data.totalLogins + " times</b> and achieved a total of <b>" + data.totalGoalsAchieved + " goals</b> in their lifetime. ";
+                narrative += "Today, they achieved <b>" + dailyStr + "</b> of their daily goals.";
+                
+                document.getElementById("profile-narrative").innerHTML = narrative;
+                document.getElementById("profile-title").innerHTML = data.name + "'s Profile";
+                
                 renderCalendar(data.dates);
             }
         };

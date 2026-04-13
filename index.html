@@ -41,10 +41,14 @@
             </div>
         </div>
 
-        <!-- Check-in Modal -->
+        <!-- Profile & Check-in Modal -->
         <div id="checkin-overlay" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                <h2>Daily Attendance</h2>
+            <div class="modal-content profile-modal">
+                <h2 id="profile-title">Player Profile</h2>
+                <div id="profile-narrative" style="margin-bottom:20px; font-size:14px; line-height:1.5; color:#bbccdd; text-align:left; background:rgba(0,0,0,0.3); padding:15px; border-radius:10px;">
+                    Loading profile data...
+                </div>
+                <h3 style="color:#00ccff; font-weight:300; font-size:14px; letter-spacing:2px; margin-bottom:15px;">Daily Attendance</h3>
                 <div id="calendar-grid"></div>
                 <button id="btn-checkin" disabled>CHECK IN</button>
                 <button id="btn-close-checkin">CLOSE</button>

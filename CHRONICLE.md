@@ -184,6 +184,14 @@
     - Added an API endpoint `resetCheckin.js` bound to a 'DEBUG: RESET TODAY' hud button, allowing the testagent to purge their today's record and test the popup flow infinitely.
     - Admin DB execution added to manually remove Ramnhell's `2026-04-13` attendance upon login migration.
 
+### v0.10.0 - Enhanced Profile Stats & Narrative
+- **Features:**
+    - Upgraded Check-in Modal: Rebranded to "Player Profile" with an integrated calendar layout.
+    - Dynamic Narrative: Shows a calculated profile description using real database stats. Includes gender-aware pronouns ("He/Him" or "She/Her").
+    - Statistics: Calculates and displays Current Streak, Total Logins, Lifetime Goals Achieved, and Daily Goals ratio (0/0 as baseline).
+- **Infrastructure:**
+    - Created a new `/api/getProfile` endpoint that calculates streaks based on consecutive `check_ins` dates and aggregates historical `habits` data from Neon DB.
+
 ---
 
 ## 🚀 Next Steps
