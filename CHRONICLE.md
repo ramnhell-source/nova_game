@@ -62,6 +62,13 @@
 ---
 
 ## 🛠 Standard Operating Procedures (Protocol)
+> [!IMPORTANT]
+> **🚀 CRITICAL DEPLOYMENT WORKFLOW**
+> After EVERY code change:
+> 1. **Commit & Push:** Immediately run `git add . && git commit -m "..." && git push origin master`.
+> 2. **Monitor Deploy:** Provide the user with the [Netlify Deploys Link](https://app.netlify.com/projects/ornate-brioche-e291c7/deploys) so they can verify the live build.
+> 3. **Chronicle:** Update this file only AFTER the code is pushed.
+
 1. **Sync Protocol:** Every feature completion MUST be followed by a `git push`.
 2. **Database Integrity:** Ensure `SCHEMA.sql` is updated alongside any database changes. Do NOT store chat logs in the DB to save storage.
 3. **Agent Handoff:** Always update `CHRONICLE.md` before ending a session.
@@ -92,8 +99,9 @@
 - [x] Sprite Correction: Fixed Male orientation (v0.5.3).
 - [x] LIVE URL: https://ornate-brioche-e291c7.netlify.app
 - [x] Live Chat: Real-time bubbles above players (v0.6.0).
-- [x] Movement Sync: Increased polling frequency to 500ms (v0.6.0).
+- [x] Movement Sync: Hyper-speed polling frequency (300ms) for real-time feel (v0.6.1).
 - [x] UI: Added chat input and versioning HUD (v0.6.0).
+- [x] Sprites: Adjusted Male height to be taller than Female (v0.6.1).
 
 ---
 
@@ -139,6 +147,13 @@
 - **Infrastructure:**
     - Modified `heartbeat` function to relay temporary chat messages without long-term history storage.
     - Added `chat_msg` and `chat_at` columns to `users` table.
+
+### v0.6.1 - Real-Time Optimization
+- **Features:**
+    - Height Scaling: Male sprites are now 15% taller than Female sprites for better visual distinction.
+- **Optimization:**
+    - Movement Sync: Reduced polling interval to **300ms** (Hyper-speed). This is the optimal threshold for "Real-Time" feel on serverless architecture before hitting DB concurrency bottlenecks.
+    - Updated HUD to v0.6.1.
 
 ---
 

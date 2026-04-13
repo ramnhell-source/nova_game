@@ -189,7 +189,7 @@
         }));
         player.newMsg = null; // Clear after sending
 
-        setTimeout(startHeartbeat, 500); // Faster sync: 500ms for "Live" feel
+        setTimeout(startHeartbeat, 300); // 300ms for "Real-Time" feel (serverless limit optimal)
     }
 
     function findOtherPlayer(id) {
@@ -362,6 +362,7 @@
 
     function drawSprite(img, x, y, flip, name, gender, chatMsg, chatTime) {
         var drawWidth = 64;
+        if (gender === "male") drawWidth = 74; // Male is taller/larger
         var drawHeight = (img.height / img.width) * drawWidth;
         
         ctx.save();
