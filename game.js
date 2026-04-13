@@ -202,7 +202,7 @@
         }));
         player.newMsg = null; // Clear after sending
 
-        setTimeout(startHeartbeat, 300); // 300ms for "Real-Time" feel (serverless limit optimal)
+        setTimeout(startHeartbeat, 500); // 500ms for stability (prevents Neon connection limits)
     }
 
     function findOtherPlayer(id) {

@@ -11,6 +11,12 @@ exports.handler = async (event, context) => {
 
         const sql = neon(process.env.DATABASE_URL);
 
+        // Self-Healing Migration for Chat
+        try {
+            await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS chat_msg VARCHAR(100)`;
+            await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS chat_at TIMESTAMP WITH TIME ZONE`;
+        } catch(e) {}
+
         // Update self
         if (msg) {
             await sql`

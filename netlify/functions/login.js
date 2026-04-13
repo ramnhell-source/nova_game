@@ -9,6 +9,17 @@ exports.handler = async (event, context) => {
         const { name, pin } = JSON.parse(event.body);
         const sql = neon(process.env.DATABASE_URL);
 
+        // Self-Healing Migration (v0.7.2 Hotfix)
+        try {
+            await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS spins INTEGER DEFAULT 0`;
+            await sql`CREATE TABLE IF NOT EXISTS check_ins (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id),
+                day_date DATE NOT NULL,
+                UNIQUE(user_id, day_date)
+            )`;
+        } catch(e) { console.log("Migration skipped or failed:", e.message); }
+
         const result = await sql`
             SELECT id, name, gender, level, xp, gold, spins 
             FROM users 

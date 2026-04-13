@@ -155,6 +155,13 @@
     - Movement Sync: Reduced polling interval to **300ms** (Hyper-speed). This is the optimal threshold for "Real-Time" feel on serverless architecture before hitting DB concurrency bottlenecks.
     - Updated HUD to v0.6.1.
 
+### v0.7.2 - Database Hotfix
+- **Fixes:**
+    - Resolved "Database Error" by implementing **Self-Healing Migrations** within the Netlify Functions.
+    - Automated creation of missing columns (`spins`, `chat_msg`, `chat_at`) and tables (`check_ins`) to bypass terminal failures.
+- **Optimization:**
+    - Adjusted movement sync back to **500ms** to ensure stability on Neon's free tier connection limits.
+
 ---
 
 ## 🚀 Next Steps
