@@ -221,6 +221,17 @@
     - Synchronous Ratios: `Total lifetime goals` directly reads the entire historical `daily_quests` log. The "Today" progress rigidly locks to a denominator of 7 (e.g., `2/7`).
     - Smart Sync: Pushing the "Finish" button on a Quest automatically fires a background shadow-fetch to update the Profile narrative string under the hood, guaranteeing absolute real-time validity without any manual screen refreshes.
 
+### v0.13.0 - E-Shop System & Mutual IRL Rewards
+- **Features:**
+    - E-Shop (E Button): Introduced a gift shop where users can spend Gold to initiate social IRL tasks.
+    - IRL Quest (TFT Item): Users can spend 5 Gold to invite an active friend to play TFT.
+    - Notification System: Added a glowing top-right notification hub. The receiver sees invitations and can mark them as 'Done'.
+    - Mutual Reward: Completing an IRL quest awards **+1 Free Spin** to both the sender and the receiver.
+- **Infrastructure:**
+    - Created `irl_quests` table to track social interations.
+    - Implemented `buyIRLQuest`, `getIRLQuests`, and `completeIRLQuest` endpoints.
+    - Shifted Gold/Spins HUD to the top-left sidebar for better hierarchy.
+
 ---
 
 ## 🚀 Next Steps

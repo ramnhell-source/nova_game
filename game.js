@@ -16,6 +16,7 @@
     var elSpins = document.getElementById("val-spins");
     var barXP = document.getElementById("bar-xp");
     var barHP = document.getElementById("bar-hp");
+    var notifBtn = document.getElementById("notif-btn");
 
     var width, height;
     var stars = [];
@@ -164,6 +165,7 @@
         }, isAutoLogin ? 500 : 2000);
 
         startHeartbeat();
+        pollNotifications(); // New: Start notification polling
         updateHUD();
     }
 
@@ -344,6 +346,20 @@
                 }
             };
             xhr.send(JSON.stringify({ userId: gameState.user.id }));
+        });
+
+        // E-Shop & Notifications (v0.13.0)
+        document.getElementById("eshop-btn").addEventListener("click", showEShop);
+        document.getElementById("eshop-btn").style.display = "flex";
+        document.getElementById("btn-close-eshop").addEventListener("click", function() {
+            document.getElementById("eshop-overlay").style.display = "none";
+        });
+        document.getElementById("btn-buy-tft").addEventListener("click", handleBuyTFT);
+        document.getElementById("btn-confirm-tft").addEventListener("click", confirmTFTRequest);
+
+        document.getElementById("notif-btn").addEventListener("click", showNotifs);
+        document.getElementById("btn-close-notif").addEventListener("click", function() {
+            document.getElementById("notif-overlay").style.display = "none";
         });
     }
 
@@ -559,6 +575,124 @@
                 floater.parentNode.removeChild(floater);
             }
         }, 1000);
+    }
+
+    // --- E-Shop & IRL Quests (v0.13.0) ---
+    function showEShop() {
+        if (!gameState.authenticated) return;
+        document.getElementById("eshop-overlay").style.display = "flex";
+        document.getElementById("eshop-dropdown").style.display = "none";
+    }
+
+    function handleBuyTFT() {
+        if (gameState.gold < 5) return alert("Not enough gold (Need 5 G)");
+        
+        // Load active players from global otherPlayers state
+        var select = document.getElementById("tft-target-select");
+        select.innerHTML = "";
+        
+        if (otherPlayers.length === 0) {
+            return alert("No other players currently active to play with!");
+        }
+
+        otherPlayers.forEach(function(p) {
+            var opt = document.createElement("option");
+            opt.value = p.id;
+            opt.innerHTML = p.name;
+            select.appendChild(opt);
+        });
+
+        document.getElementById("eshop-dropdown").style.display = "block";
+    }
+
+    function confirmTFTRequest() {
+        var targetId = document.getElementById("tft-target-select").value;
+        if (!targetId) return;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/buyIRLQuest", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                gameState.gold = data.gold;
+                updateHUD();
+                document.getElementById("eshop-overlay").style.display = "none";
+                alert("Request sent! You both get +1 Spin once they mark it as Done.");
+            }
+        };
+        xhr.send(JSON.stringify({ 
+            senderId: gameState.user.id, 
+            targetId: parseInt(targetId, 10), 
+            taskName: "Play TFT with " + gameState.user.name,
+            goldCost: 5 
+        }));
+    }
+
+    function pollNotifications() {
+        if (!gameState.authenticated) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/getIRLQuests?userId=" + gameState.user.id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                var count = data.quests.length;
+                var btn = document.getElementById("notif-btn");
+                btn.innerHTML = "NOTIFS " + count;
+                if (count > 0) {
+                    btn.classList.add("notif-glow");
+                } else {
+                    btn.classList.remove("notif-glow");
+                }
+                gameState.notifs = data.quests;
+            }
+        };
+        xhr.send();
+        setTimeout(pollNotifications, 5000); // Poll every 5 seconds
+    }
+
+    function showNotifs() {
+        document.getElementById("notif-overlay").style.display = "flex";
+        renderNotifs();
+    }
+
+    function renderNotifs() {
+        var list = document.getElementById("notif-list");
+        list.innerHTML = "";
+        if (!gameState.notifs || gameState.notifs.length === 0) {
+            list.innerHTML = "No pending IRL requests.";
+            return;
+        }
+
+        gameState.notifs.forEach(function(q) {
+            var item = document.createElement("div");
+            item.className = "quest-item";
+            item.innerHTML = "<span><b>" + q.sender_name + "</b>: " + q.task_name + "</span>";
+            
+            var btn = document.createElement("button");
+            btn.className = "btn-complete-quest";
+            btn.innerHTML = "Done";
+            btn.onclick = function() { finishIRLQuest(q.id, btn); };
+            item.appendChild(btn);
+            
+            list.appendChild(item);
+        });
+    }
+
+    function finishIRLQuest(questId, btn) {
+        btn.disabled = true;
+        btn.innerHTML = "...";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/completeIRLQuest", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert("Finished! Both players awarded +1 Free Spin.");
+                // Refresh local session to update spins
+                location.reload(); 
+            }
+        };
+        xhr.send(JSON.stringify({ questId: questId }));
     }
 
     function handleLogin() {
