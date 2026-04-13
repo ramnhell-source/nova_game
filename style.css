@@ -165,6 +165,7 @@ body, html {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s;
 }
+
 #quest-btn {
     position: absolute;
     top: 10px;
@@ -191,6 +192,61 @@ body, html {
     transform: scale(1.05);
     border-color: #ffffff;
 }
+
+#eshop-btn {
+    position: absolute;
+    top: 10px;
+    left: 160px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 204, 255, 0.2);
+    border: 2px solid rgba(0, 204, 255, 0.5);
+    border-radius: 12px;
+    color: #00ccff;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+#eshop-btn:hover {
+    transform: scale(1.05);
+    border-color: #ffffff;
+}
+
+#stats-hud {
+    position: absolute;
+    top: 80px;
+    left: 10px;
+    z-index: 900;
+    pointer-events: none;
+}
+
+.hud-text {
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-bottom: 5px;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.hud-text:nth-child(2) {
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    border-color: rgba(0, 255, 136, 0.2);
+}
+
 #profile-btn:hover {
     transform: scale(1.05);
     border-color: #00ccff;
@@ -213,7 +269,7 @@ body, html {
     padding: 15px;
     min-width: 220px;
     pointer-events: auto;
-    margin-left: 160px; /* Offset for Profile + Quest Buttons */
+    margin-left: 235px; /* Offset for Profile + Quest + EShop Buttons */
     margin-top: 10px;
 }
 
@@ -246,12 +302,18 @@ body, html {
     transition: width 0.3s;
 }
 
-#gold-display {
-    font-size: 20px;
-    font-weight: 200;
-    letter-spacing: 2px;
-    color: #ffd700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+.notif-glow {
+    -webkit-animation: glow 1s infinite alternate;
+    animation: glow 1s infinite alternate;
+}
+
+@-webkit-keyframes glow {
+    from { box-shadow: 0 0 5px #ff4488, inset 0 0 5px #ff4488; }
+    to { box-shadow: 0 0 20px #ff4488, inset 0 0 10px #ff4488; border-color: #ffffff; color: #ffffff; }
+}
+@keyframes glow {
+    from { box-shadow: 0 0 5px #ff4488, inset 0 0 5px #ff4488; }
+    to { box-shadow: 0 0 20px #ff4488, inset 0 0 10px #ff4488; border-color: #ffffff; color: #ffffff; }
 }
 
 .top-right-glass {
@@ -511,4 +573,14 @@ body, html {
 @keyframes floatUp {
     0% { transform: translateY(0); opacity: 1; }
     100% { transform: translateY(-30px); opacity: 0; }
+}
+
+#tft-target-select {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #ffd700;
+    color: #ffffff;
+    border-radius: 8px;
+    outline: none;
 }

@@ -39,3 +39,12 @@ CREATE TABLE IF NOT EXISTS daily_quests (
     day_date DATE NOT NULL,
     UNIQUE(user_id, quest_id, day_date)
 );
+
+CREATE TABLE IF NOT EXISTS irl_quests (
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER REFERENCES users(id),
+    receiver_id INTEGER REFERENCES users(id),
+    task_name VARCHAR(100) NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

@@ -25,6 +25,14 @@ exports.handler = async (event, context) => {
                 day_date DATE NOT NULL,
                 UNIQUE(user_id, quest_id, day_date)
             )`;
+            await sql`CREATE TABLE IF NOT EXISTS irl_quests (
+                id SERIAL PRIMARY KEY,
+                sender_id INTEGER REFERENCES users(id),
+                receiver_id INTEGER REFERENCES users(id),
+                task_name VARCHAR(100) NOT NULL,
+                completed BOOLEAN DEFAULT FALSE,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            )`;
             
             // v0.9.0: Remove Ramnhell check-in for 2026-04-13
             await sql`DELETE FROM check_ins WHERE user_id = (SELECT id FROM users WHERE name = 'Ramnhell' LIMIT 1) AND day_date = '2026-04-13'`;
