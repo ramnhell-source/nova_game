@@ -1,0 +1,247 @@
+/* Legacy Safari/iOS 9 Compatible CSS */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #05050a;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #ffffff;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+}
+
+#gameCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #05050a 100%);
+}
+
+/* Centered Layout System */
+#ui-layout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+#splash-screen {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    pointer-events: auto;
+}
+
+#game-title {
+    font-size: 64px;
+    font-weight: 200;
+    letter-spacing: 12px;
+    margin: 0;
+    text-shadow: 0 0 20px rgba(100, 200, 255, 0.4);
+    opacity: 0;
+    -webkit-animation: fadeIn 3s forwards;
+    animation: fadeIn 3s forwards;
+    text-transform: lowercase;
+}
+
+#game-status {
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    color: #8899aa;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    opacity: 0;
+    -webkit-animation: fadeIn 2s 1s forwards;
+    animation: fadeIn 2s 1s forwards;
+}
+
+#auth-box {
+    background: rgba(10, 10, 25, 0.6);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    border-radius: 16px;
+    padding: 30px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    -webkit-animation: fadeIn 2s 2s forwards;
+    animation: fadeIn 2s 2s forwards;
+}
+
+.auth-form input, .auth-form select {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(100, 204, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+#btn-signup, #btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #00ccff, #0088ff);
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 136, 255, 0.3);
+}
+
+.toggle-auth {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #8899aa;
+}
+
+.toggle-auth span {
+    color: #00ccff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#auth-opts {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #8899aa;
+}
+
+/* RPG HUD Styles */
+#rpg-hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.hud-top {
+    background: rgba(10, 10, 20, 0.7);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    min-width: 220px;
+    pointer-events: auto;
+}
+
+.stat-row {
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #88bbff;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.stat-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4488ff, #00ccff);
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+    transition: width 0.3s;
+}
+
+#gold-display {
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+#btn-logout {
+    background: rgba(255, 68, 136, 0.1);
+    border: 1px solid #ff4488;
+    color: #ff4488;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    pointer-events: auto;
+    margin-top: 10px;
+}
+
+#mobile-controls {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.ctrl-btn {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(100, 204, 255, 0.2);
+    border-radius: 50%;
+    color: #00ccff;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.ctrl-btn:active {
+    background: rgba(0, 204, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.4);
+}
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+

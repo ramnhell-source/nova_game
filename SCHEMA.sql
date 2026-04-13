@@ -1,0 +1,23 @@
+-- H A V E N - Database Schema (Neon / Postgres)
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    pin CHAR(4) NOT NULL,
+    gender VARCHAR(10),
+    level INTEGER DEFAULT 1,
+    xp INTEGER DEFAULT 0,
+    gold INTEGER DEFAULT 0,
+    pos_x INTEGER DEFAULT 0,
+    pos_y INTEGER DEFAULT 0,
+    last_heartbeat TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS habits (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    title VARCHAR(100) NOT NULL,
+    streak INTEGER DEFAULT 0,
+    last_completed TIMESTAMP WITH TIME ZONE
+);

@@ -1,0 +1,7 @@
+GOAL: H A V E N (Habit Tracker RPG)
+PLATFORM: iPad Mini 1 (iOS 9.3.2)
+STANDARD: Strict ES5 / Vanilla JS / Legacy CSS
+CONTEXT: This file is the bridge between Linux (Incorporated) and Windows (Foundation).
+CURRENT TASK: Designing high-quality, Ghibli-inspired sprites on Windows to be synced back to the core engine on Linux.
+AI AGENT INSTRUCTION: Please maintain project continuity. Do not use modern JS syntax. Update CHRONICLE.md on every phase change.
+LAST SYNC: 2026-04-13 15:04

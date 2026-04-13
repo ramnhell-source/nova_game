@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHRONICLE.md - Notepad</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #1e1e1e; /* Win10 Dark Mode Background */
+            color: #ffffff;
+            font-family: 'Consolas', 'Courier New', monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Title Bar Simulation */
+        .title-bar {
+            background-color: #2b2b2b;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 12px;
+            border-bottom: 1px solid #3c3c3c;
+            user-select: none;
+        }
+
+        .menu-bar {
+            background-color: #1e1e1e;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 12px;
+            border-bottom: 1px solid #333333;
+            gap: 15px;
+            color: #cccccc;
+        }
+
+        .menu-item:hover {
+            color: #ffffff;
+            cursor: default;
+        }
+
+        #content {
+            flex-grow: 1;
+            padding: 10px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            line-height: 1.5;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3e3e3e;
+            border: 3px solid #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4e4e4e;
+        }
+
+        .status-bar {
+            background-color: #1e1e1e;
+            height: 22px;
+            border-top: 1px solid #333333;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 11px;
+            color: #aaaaaa;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-bar">
+        <span>CHRONICLE.md - Notepad</span>
+    </div>
+    <div class="menu-bar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">Format</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Help</span>
+    </div>
+    <div id="content">Loading record...</div>
+    <div class="status-bar">
+        <span>Ln 1, Col 1</span>
+        <span>100%</span>
+        <span>Windows (CRLF)</span>
+        <span>UTF-8</span>
+    </div>
+
+    <script>
+        // This script will reload the content every 3 seconds
+        async function updateContent() {
+            try {
+                // We fetch the chronicle file
+                const response = await fetch('CHRONICLE.md');
+                const text = await response.text();
+                document.getElementById('content').textContent = text;
+                
+                // Update status bar mock
+                const lines = text.split('\n').length;
+                document.querySelector('.status-bar span:first-child').textContent = `Lines: ${lines}, Words: ${text.split(/\s+/).length}`;
+            } catch (e) {
+                console.error("Waiting for file connection...");
+            }
+        }
+
+        setInterval(updateContent, 2000);
+        updateContent();
+    </script>
+</body>
+</html>

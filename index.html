@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nova Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- RPG UI (HUD) -->
+        <div id="rpg-hud" style="display:none;">
+            <div class="hud-top">
+                <div class="stat-row">
+                    <span class="stat-label">Level <span id="val-level">1</span></span>
+                    <div class="stat-bar-bg"><div id="bar-xp" class="stat-bar-fill"></div></div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Exhaustion</span>
+                    <div class="stat-bar-bg"><div id="bar-hp" class="stat-bar-fill" style="background: #ff4488;"></div></div>
+                </div>
+            </div>
+            
+            <div id="gold-display">GOLD: <span id="val-gold">0</span></div>
+            <button id="btn-logout">LOGOUT</button>
+        </div>
+
+        <!-- Centered UI Overlay -->
+        <div id="ui-layout">
+            <div id="splash-screen">
+                <h1 id="game-title">haven</h1>
+                <p id="game-status">Connecting to Bridge...</p>
+                
+                <div id="auth-box">
+                    <div id="auth-forms">
+                        <!-- Signup Form -->
+                        <div id="form-signup" class="auth-form" style="display:none;">
+                            <input type="text" id="reg-name" placeholder="Name" maxlength="20">
+                            <input type="password" id="reg-pin" placeholder="4-Digit PIN" maxlength="4">
+                            <select id="reg-gender">
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                            <button id="btn-signup">Create Account</button>
+                            <p class="toggle-auth">Have an account? <span id="link-to-login">Log In</span></p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div id="form-login" class="auth-form">
+                            <input type="text" id="login-name" placeholder="Name" maxlength="20">
+                            <input type="password" id="login-pin" placeholder="4-Digit PIN" maxlength="4">
+                            <button id="btn-login">Log In</button>
+                            <p class="toggle-auth">No account? <span id="link-to-signup">Create One</span></p>
+                        </div>
+                    </div>
+                    
+                    <div id="auth-opts">
+                        <label><input type="checkbox" id="check-remember"> Remember account</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div id="mobile-controls" style="display:none;">
+            <button id="btn-left" class="ctrl-btn">◀</button>
+            <button id="btn-right" class="ctrl-btn">▶</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
