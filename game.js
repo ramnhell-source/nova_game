@@ -306,6 +306,7 @@
     function showCheckin() {
         if (!gameState.authenticated) return;
         document.getElementById("checkin-overlay").style.display = "flex";
+        document.getElementById("btn-checkin").disabled = true; // Disable until load
         
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "/api/getCheckins?userId=" + gameState.user.id, true);
@@ -371,8 +372,10 @@
             grid.appendChild(dayEl);
         }
 
-        // Disable checkin if already done today
-        document.getElementById("btn-checkin").style.display = (checkedDays.indexOf(today) !== -1) ? "none" : "block";
+        // Enable checkin only after load if not already done today
+        var isDone = (checkedDays.indexOf(today) !== -1);
+        document.getElementById("btn-checkin").style.display = isDone ? "none" : "block";
+        document.getElementById("btn-checkin").disabled = false;
     }
 
     function handleLogin() {
@@ -455,7 +458,7 @@
 
     function drawSprite(img, x, y, flip, name, gender, chatMsg, chatTime) {
         var drawWidth = 64;
-        if (gender === "male") drawWidth = 74; // Male is taller/larger
+        if (gender === "male") drawWidth = 84; // Male is significantly taller/larger
         var drawHeight = (img.height / img.width) * drawWidth;
         
         ctx.save();

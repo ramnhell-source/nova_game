@@ -59,6 +59,14 @@ body, html {
     text-transform: lowercase;
 }
 
+.version-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(100, 204, 255, 0.4);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
 #game-status {
     font-size: 14px;
     font-weight: 300;
@@ -386,6 +394,13 @@ body, html {
     letter-spacing: 2px;
     cursor: pointer;
     margin-bottom: 10px;
+}
+
+#btn-checkin:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.2);
+    cursor: default;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #btn-close-checkin {

@@ -168,6 +168,13 @@
     - Updated frontend calendar logic to calculate "today" in PH time, ensuring consistent green/red marking.
     - Optimized date string parsing for **iOS 9.3.2** (Strict ES5 compatibility).
 
+### v0.8.0 - Sprite Scaling and UI Refinement
+- **Features:**
+    - Visibility: Displayed `v0.8.0` on both Splash Screen and RPG HUD for version tracking.
+    - Sprite Logic: Adjusted Male sprite draw box to be noticeably wider and taller (`drawWidth = 84`) than the Female baseline (`64`).
+- **Optimization:**
+    - UI UX: The `CHECK IN` button is now explicitly disabled while awaiting the API response, only enabling when the calendar is fully constructed, mitigating duplicate requests.
+
 ---
 
 ## 🚀 Next Steps
