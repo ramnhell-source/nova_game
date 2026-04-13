@@ -10,7 +10,7 @@ exports.handler = async (event, context) => {
         const sql = neon(process.env.DATABASE_URL);
 
         const result = await sql`
-            SELECT id, name, gender, level, xp, gold 
+            SELECT id, name, gender, level, xp, gold, spins 
             FROM users 
             WHERE name = ${name} AND pin = ${pin}
             LIMIT 1
@@ -23,9 +23,18 @@ exports.handler = async (event, context) => {
             };
         }
 
+        const user = result[0];
+
+        // Check if checked in today
+        const checkins = await sql`
+            SELECT 1 FROM check_ins 
+            WHERE user_id = ${user.id} AND day_date = CURRENT_DATE
+        `;
+        user.checkedInToday = checkins.length > 0;
+
         return {
             statusCode: 200,
-            body: JSON.stringify(result[0])
+            body: JSON.stringify(user)
         };
     } catch (err) {
         console.error(err);

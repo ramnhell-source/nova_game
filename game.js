@@ -13,6 +13,7 @@
     var statusText = document.getElementById("game-status");
     var elLevel = document.getElementById("val-level");
     var elGold = document.getElementById("val-gold");
+    var elSpins = document.getElementById("val-spins");
     var barXP = document.getElementById("bar-xp");
     var barHP = document.getElementById("bar-hp");
 
@@ -28,6 +29,7 @@
         xp: 0,
         xpNext: 100,
         gold: 0,
+        spins: 0,
         health: 100,
         maxHealth: 100
     };
@@ -111,12 +113,17 @@
         gameState.level = user.level || 1;
         gameState.xp = user.xp || 0;
         gameState.gold = user.gold || 0;
+        gameState.spins = user.spins || 0;
 
         document.getElementById("auth-box").style.display = "none";
         document.getElementById("game-status").innerHTML = "Welcome back, " + user.name;
         document.getElementById("rpg-hud").style.display = "flex";
         document.getElementById("mobile-controls").style.display = "flex";
         document.getElementById("bottom-ui").style.display = "flex";
+
+        // Profile Pic
+        var mySprite = user.gender === "male" ? "assets/sprites/SpriteMale.png" : "assets/sprites/SpriteStand.png";
+        document.getElementById("profile-pic").style.backgroundImage = "url('" + mySprite + "')";
 
         if (document.getElementById("check-remember").checked) {
             localStorage.setItem("haven_remembered_user", JSON.stringify(user));
@@ -125,9 +132,15 @@
         setTimeout(function() {
             document.getElementById("splash-screen").style.opacity = "0";
             document.getElementById("splash-screen").style.pointerEvents = "none";
+            
+            // Daily Check-in Logic
+            if (!user.checkedInToday) {
+                showCheckin();
+            }
         }, 2000);
 
         startHeartbeat();
+        updateHUD();
     }
 
     function logout() {
@@ -281,6 +294,76 @@
             }
             input.blur();
         }
+
+        // Attendance / Profile
+        document.getElementById("profile-btn").addEventListener("click", showCheckin);
+        document.getElementById("btn-close-checkin").addEventListener("click", function() {
+            document.getElementById("checkin-overlay").style.display = "none";
+        });
+        document.getElementById("btn-checkin").addEventListener("click", handleCheckin);
+    }
+
+    function showCheckin() {
+        if (!gameState.authenticated) return;
+        document.getElementById("checkin-overlay").style.display = "flex";
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/getCheckins?userId=" + gameState.user.id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                renderCalendar(data.dates);
+            }
+        };
+        xhr.send();
+    }
+
+    function handleCheckin() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/checkin", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                gameState.spins = data.spins;
+                updateHUD();
+                showCheckin(); // Refresh calendar
+            }
+        };
+        xhr.send(JSON.stringify({ userId: gameState.user.id }));
+    }
+
+    function renderCalendar(checkedDates) {
+        var grid = document.getElementById("calendar-grid");
+        grid.innerHTML = "";
+        
+        var now = new Date();
+        var daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        var today = now.getDate();
+
+        // Convert checkedDates to just days
+        var checkedDays = checkedDates.map(function(d) {
+            return new Date(d).getDate();
+        });
+
+        for (var i = 1; i <= daysInMonth; i++) {
+            var dayEl = document.createElement("div");
+            dayEl.className = "calendar-day";
+            dayEl.innerHTML = i;
+            
+            if (checkedDays.indexOf(i) !== -1) {
+                dayEl.classList.add("checked");
+            } else if (i < today) {
+                dayEl.classList.add("missed");
+            } else if (i === today) {
+                dayEl.classList.add("today");
+            }
+            
+            grid.appendChild(dayEl);
+        }
+
+        // Disable checkin if already done today
+        document.getElementById("btn-checkin").style.display = (checkedDays.indexOf(today) !== -1) ? "none" : "block";
     }
 
     function handleLogin() {
@@ -337,6 +420,7 @@
     function updateHUD() {
         elLevel.innerHTML = gameState.level;
         elGold.innerHTML = gameState.gold;
+        elSpins.innerHTML = gameState.spins;
         barXP.style.width = (gameState.xp / gameState.xpNext * 100) + "%";
         barHP.style.width = (gameState.health / gameState.maxHealth * 100) + "%";
     }

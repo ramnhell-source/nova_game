@@ -131,16 +131,43 @@ body, html {
 
 /* RPG HUD Styles */
 #rpg-hud {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
+    pointer-events: none;
+    flex-direction: column;
+}
+
+.hud-top-row {
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
     pointer-events: none;
+}
+
+#profile-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(10, 10, 25, 0.8);
+    border: 2px solid rgba(100, 204, 255, 0.5);
+    border-radius: 12px;
+    padding: 2px;
+    margin-right: 15px;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+#profile-btn:hover {
+    transform: scale(1.05);
+    border-color: #00ccff;
+}
+
+#profile-pic {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background-size: 200%; /* Zoom into head */
+    background-position: center 10%; /* Focus on top of sprite */
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .hud-top {
@@ -290,5 +317,83 @@ body, html {
     letter-spacing: 2px;
     color: rgba(136, 153, 170, 0.5);
     text-transform: uppercase;
+}
+
+/* Modals */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: rgba(15, 15, 30, 0.95);
+    border: 1px solid rgba(100, 204, 255, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.modal-content h2 {
+    font-weight: 200;
+    letter-spacing: 4px;
+    margin-bottom: 25px;
+    color: #4488ff;
+}
+
+#calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.calendar-day {
+    aspect-ratio: 1/1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #8899aa;
+}
+
+.calendar-day.missed { background: rgba(255, 68, 136, 0.2); color: #ff4488; border: 1px solid rgba(255, 68, 136, 0.3); }
+.calendar-day.checked { background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); }
+.calendar-day.today { border: 1px solid #00ccff; color: #ffffff; }
+
+#btn-checkin {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #00ff88, #0088ff);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+#btn-close-checkin {
+    background: transparent;
+    border: none;
+    color: #8899aa;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
 }
 

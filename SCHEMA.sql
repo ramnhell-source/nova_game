@@ -10,10 +10,18 @@ CREATE TABLE IF NOT EXISTS users (
     gold INTEGER DEFAULT 0,
     pos_x INTEGER DEFAULT 0,
     pos_y INTEGER DEFAULT 0,
+    spins INTEGER DEFAULT 0,
     chat_msg VARCHAR(100),
     chat_at TIMESTAMP WITH TIME ZONE,
     last_heartbeat TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS check_ins (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    day_date DATE NOT NULL,
+    UNIQUE(user_id, day_date)
 );
 
 CREATE TABLE IF NOT EXISTS habits (

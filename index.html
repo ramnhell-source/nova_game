@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nova Game</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="h a v e n">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>h a v e n</title>
+    <link rel="icon" type="image/jpeg" href="assets/favicon/favicon">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,25 +16,40 @@
         
         <!-- RPG UI (HUD) -->
         <div id="rpg-hud" style="display:none;">
-            <div class="hud-top">
-                <div class="stat-row">
-                    <span class="stat-label">Level <span id="val-level">1</span></span>
-                    <div class="stat-bar-bg"><div id="bar-xp" class="stat-bar-fill"></div></div>
+            <div class="hud-top-row">
+                <div id="profile-btn">
+                    <div id="profile-pic"></div>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">Exhaustion</span>
-                    <div class="stat-bar-bg"><div id="bar-hp" class="stat-bar-fill" style="background: #ff4488;"></div></div>
+                <div class="hud-top">
+                    <div class="stat-row">
+                        <span class="stat-label">Level <span id="val-level">1</span></span>
+                        <div class="stat-bar-bg"><div id="bar-xp" class="stat-bar-fill"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Exhaustion</span>
+                        <div class="stat-bar-bg"><div id="bar-hp" class="stat-bar-fill" style="background: #ff4488;"></div></div>
+                    </div>
                 </div>
             </div>
             
-            <div id="gold-display">GOLD: <span id="val-gold">0</span></div>
+            <div id="gold-display">GOLD: <span id="val-gold">0</span> | SPINS: <span id="val-spins">0</span></div>
             <button id="btn-logout">LOGOUT</button>
+        </div>
+
+        <!-- Check-in Modal -->
+        <div id="checkin-overlay" class="modal-overlay" style="display:none;">
+            <div class="modal-content">
+                <h2>Daily Attendance</h2>
+                <div id="calendar-grid"></div>
+                <button id="btn-checkin">CHECK IN</button>
+                <button id="btn-close-checkin">CLOSE</button>
+            </div>
         </div>
 
         <!-- Centered UI Overlay -->
         <div id="ui-layout">
             <div id="splash-screen">
-                <h1 id="game-title">haven</h1>
+                <h1 id="game-title">h a v e n</h1>
                 <p id="game-status">Connecting to Bridge...</p>
                 
                 <div id="auth-box">
