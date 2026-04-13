@@ -57,25 +57,23 @@ exports.handler = async (event, context) => {
             }
         }
 
-        // Habits/Goals stats
-        const habits = await sql`SELECT * FROM habits WHERE user_id = ${userId}`;
-        let totalGoalsAchieved = 0;
-        let dailyGoals = habits.length;
+        // Habits/Goals stats (Total lifetime & Today)
+        const allQuestsQ = await sql`
+            SELECT day_date FROM daily_quests 
+            WHERE user_id = ${userId}
+        `;
+        
+        let totalGoalsAchieved = allQuestsQ.length;
         let dailyGoalsDone = 0;
 
-        habits.forEach(h => {
-            totalGoalsAchieved += (h.streak || 0); // Assuming streak is times completed
-            
-            if (h.last_completed) {
-                let hDate = new Date(h.last_completed);
-                // Convert to PH time for comparison
-                let hUtc = hDate.getTime() + (hDate.getTimezoneOffset() * 60000);
-                let hPh = new Date(hUtc + (3600000 * 8));
-                if (hPh.getFullYear() === today.getFullYear() && 
-                    hPh.getMonth() === today.getMonth() && 
-                    hPh.getDate() === today.getDate()) {
-                    dailyGoalsDone++;
-                }
+        allQuestsQ.forEach(q => {
+            let qDate = new Date(q.day_date);
+            let qUtc = qDate.getTime() + (qDate.getTimezoneOffset() * 60000);
+            let qPh = new Date(qUtc + (3600000 * 8));
+            if (qPh.getFullYear() === today.getFullYear() && 
+                qPh.getMonth() === today.getMonth() && 
+                qPh.getDate() === today.getDate()) {
+                dailyGoalsDone++;
             }
         });
 
@@ -97,7 +95,7 @@ exports.handler = async (event, context) => {
                 totalLogins: totalLogins,
                 totalGoalsAchieved: totalGoalsAchieved,
                 dailyGoalsDone: dailyGoalsDone,
-                dailyGoalsTotal: dailyGoals,
+                dailyGoalsTotal: 7, // Hardcoded to 7 Quests basis
                 dates: monthCheckins.map(c => c.day_date)
             })
         };

@@ -358,14 +358,13 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
                 
-                // Construct narrative
-                var pronouns = data.gender === "male" ? "He/Him" : "She/Her";
+                // Construct narrative (v0.12.1 Natural Formatting)
                 var pronounSubject = data.gender === "male" ? "He" : "She";
-                var dailyStr = data.dailyGoalsTotal > 0 ? (data.dailyGoalsDone + "/" + data.dailyGoalsTotal) : "0/0";
+                var pronounPossessive = data.gender === "male" ? "his" : "her";
                 
-                var narrative = "<b>" + data.name + "</b> (" + pronouns + ") is on a <b>" + data.streak + "-day streak</b>.<br><br>";
-                narrative += pronounSubject + " has checked in <b>" + data.totalLogins + " times</b> and achieved a total of <b>" + data.totalGoalsAchieved + " goals</b> in their lifetime. ";
-                narrative += "Today, they achieved <b>" + dailyStr + "</b> of their daily goals.";
+                var narrative = "<b>" + data.name + "</b> is on a <b>" + data.streak + "-day streak</b>. ";
+                narrative += pronounSubject + " has checked in <b>" + data.totalLogins + " times</b> and achieved a total of <b>" + data.totalGoalsAchieved + " goals</b> in " + pronounPossessive + " lifetime. ";
+                narrative += "Today, " + pronounSubject.toLowerCase() + " achieved <b>" + data.dailyGoalsDone + "/7</b> of " + pronounPossessive + " daily goals.";
                 
                 document.getElementById("profile-narrative").innerHTML = narrative;
                 document.getElementById("profile-title").innerHTML = data.name + "'s Profile";
@@ -521,6 +520,24 @@
                 itemNode.appendChild(doneSpan);
                 
                 showFloatingGold("+" + gold + " Gold!");
+                
+                // Silent refresh of profile narrative (v0.12.1 Real-Time Sync)
+                if (gameState.user) {
+                    var pxhr = new XMLHttpRequest();
+                    pxhr.open("GET", "/api/getProfile?userId=" + gameState.user.id, true);
+                    pxhr.onreadystatechange = function() {
+                        if (pxhr.readyState === 4 && pxhr.status === 200) {
+                            var pdata = JSON.parse(pxhr.responseText);
+                            var pSubj = pdata.gender === "male" ? "He" : "She";
+                            var pPoss = pdata.gender === "male" ? "his" : "her";
+                            var stringText = "<b>" + pdata.name + "</b> is on a <b>" + pdata.streak + "-day streak</b>. ";
+                            stringText += pSubj + " has checked in <b>" + pdata.totalLogins + " times</b> and achieved a total of <b>" + pdata.totalGoalsAchieved + " goals</b> in " + pPoss + " lifetime. ";
+                            stringText += "Today, " + pSubj.toLowerCase() + " achieved <b>" + pdata.dailyGoalsDone + "/7</b> of " + pPoss + " daily goals.";
+                            document.getElementById("profile-narrative").innerHTML = stringText;
+                        }
+                    };
+                    pxhr.send();
+                }
             }
         };
         xhr.send(JSON.stringify({ userId: gameState.user.id, questId: questId, goldReward: gold }));

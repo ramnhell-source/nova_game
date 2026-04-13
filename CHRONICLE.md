@@ -214,6 +214,13 @@
     - Web PWA Hooks: Added `<link rel="apple-touch-icon">` bound to favicon.jpeg to enforce accurate Add-to-Homescreen application icons.
     - Updated narrative string from "logged in" to "checked in".
 
+### v0.12.1 - Narrative Sync & Goal Tracking
+- **Features:**
+    - Profile Reform: Rewrote the user profile summary into a continuous, naturally-flowing paragraph, omitting clunky parentheses.
+    - Deep Gender Integration: Correctly evaluates `gender` to inject `He/his` or `She/her` seamlessly into the text string natively on render.
+    - Synchronous Ratios: `Total lifetime goals` directly reads the entire historical `daily_quests` log. The "Today" progress rigidly locks to a denominator of 7 (e.g., `2/7`).
+    - Smart Sync: Pushing the "Finish" button on a Quest automatically fires a background shadow-fetch to update the Profile narrative string under the hood, guaranteeing absolute real-time validity without any manual screen refreshes.
+
 ---
 
 ## 🚀 Next Steps
