@@ -43,7 +43,9 @@
         glow: "#00ccff",
         ready: false,
         flip: false,
-        img: new Image()
+        img: new Image(),
+        chatMsg: "",
+        chatTime: 0
     };
 
     // Multiplayer State
@@ -114,6 +116,7 @@
         document.getElementById("game-status").innerHTML = "Welcome back, " + user.name;
         document.getElementById("rpg-hud").style.display = "flex";
         document.getElementById("mobile-controls").style.display = "flex";
+        document.getElementById("bottom-ui").style.display = "flex";
 
         if (document.getElementById("check-remember").checked) {
             localStorage.setItem("haven_remembered_user", JSON.stringify(user));
@@ -155,11 +158,15 @@
                         existing.targetY = p.pos_y;
                         existing.name = p.name;
                         existing.gender = p.gender;
+                        existing.chatMsg = p.chat_msg;
+                        existing.chatTime = p.chat_at ? new Date(p.chat_at).getTime() : 0;
                     } else {
                         p.currentX = p.pos_x;
                         p.currentY = p.pos_y;
                         p.targetX = p.pos_x;
                         p.targetY = p.pos_y;
+                        p.chatMsg = p.chat_msg;
+                        p.chatTime = p.chat_at ? new Date(p.chat_at).getTime() : 0;
                         otherPlayers.push(p);
                     }
                 }
@@ -177,10 +184,12 @@
         xhr.send(JSON.stringify({
             id: player.id,
             x: Math.floor(player.x),
-            y: Math.floor(player.y)
+            y: Math.floor(player.y),
+            msg: player.newMsg || null
         }));
+        player.newMsg = null; // Clear after sending
 
-        setTimeout(startHeartbeat, 1000); // Faster sync
+        setTimeout(startHeartbeat, 500); // Faster sync: 500ms for "Live" feel
     }
 
     function findOtherPlayer(id) {
@@ -204,6 +213,16 @@
             // Movement Direction
             if (e.keyCode === 65) player.flip = true;
             if (e.keyCode === 68) player.flip = false;
+
+            // Chat Toggle
+            if (e.keyCode === 13) {
+                var input = document.getElementById("chat-input");
+                if (document.activeElement === input) {
+                    sendChat();
+                } else {
+                    input.focus();
+                }
+            }
         });
 
         window.addEventListener("keyup", function(e) {
@@ -241,6 +260,27 @@
         btnL.addEventListener("mouseup", function() { handleBtn(65, false, true); });
         btnR.addEventListener("mousedown", function() { handleBtn(68, true, false); });
         btnR.addEventListener("mouseup", function() { handleBtn(68, false, false); });
+
+        // Chat Input Specifics
+        var chatInp = document.getElementById("chat-input");
+        chatInp.addEventListener("keydown", function(e) {
+            if (e.keyCode === 13) {
+                sendChat();
+            }
+            e.stopPropagation(); // Don't move while typing
+        });
+
+        function sendChat() {
+            var input = document.getElementById("chat-input");
+            var text = input.value.trim();
+            if (text) {
+                player.chatMsg = text;
+                player.chatTime = Date.now();
+                player.newMsg = text; // Flag for heartbeat
+                input.value = "";
+            }
+            input.blur();
+        }
     }
 
     function handleLogin() {
@@ -302,6 +342,7 @@
     }
 
     function updateMovement() {
+        if (document.activeElement === document.getElementById("chat-input")) return;
         var dx = 0, dy = 0;
         if (keys[87]) dy -= 1; // W
         if (keys[83]) dy += 1; // S
@@ -319,7 +360,7 @@
         if (player.y > height - player.size) player.y = height - player.size;
     }
 
-    function drawSprite(img, x, y, flip, name, gender) {
+    function drawSprite(img, x, y, flip, name, gender, chatMsg, chatTime) {
         var drawWidth = 64;
         var drawHeight = (img.height / img.width) * drawWidth;
         
@@ -343,6 +384,37 @@
             ctx.font = "10px Helvetica";
             ctx.textAlign = "center";
             ctx.fillText(name, x, y - drawHeight/2 - 10);
+        }
+
+        // Chat Bubble
+        if (chatMsg && Date.now() - chatTime < 3000) {
+            ctx.font = "12px Helvetica";
+            var textWidth = ctx.measureText(chatMsg).width;
+            var bW = textWidth + 20;
+            var bH = 24;
+            var bX = x - bW/2;
+            var bY = y - drawHeight/2 - 45;
+
+            // Bubble background
+            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+            ctx.beginPath();
+            ctx.moveTo(bX + 10, bY);
+            ctx.lineTo(bX + bW - 10, bY);
+            ctx.quadraticCurveTo(bX + bW, bY, bX + bW, bY + 10);
+            ctx.lineTo(bX + bW, bY + bH - 10);
+            ctx.quadraticCurveTo(bX + bW, bY + bH, bX + bW - 10, bY + bH);
+            ctx.lineTo(x + 5, bY + bH);
+            ctx.lineTo(x, bY + bH + 5); // Pointy tip
+            ctx.lineTo(x - 5, bY + bH);
+            ctx.lineTo(bX + 10, bY + bH);
+            ctx.quadraticCurveTo(bX, bY + bH, bX, bY + bH - 10);
+            ctx.lineTo(bX, bY + 10);
+            ctx.quadraticCurveTo(bX, bY, bX + 10, bY);
+            ctx.fill();
+
+            // Bubble text
+            ctx.fillStyle = "#000000";
+            ctx.fillText(chatMsg, x, bY + 16);
         }
     }
 
@@ -368,12 +440,12 @@
                 p.currentY += (p.targetY - p.currentY) * 0.1;
 
                 var img = p.gender === "male" ? maleSpriteImg : femaleSpriteImg;
-                drawSprite(img, p.currentX, p.currentY, false, p.name, p.gender);
+                drawSprite(img, p.currentX, p.currentY, false, p.name, p.gender, p.chatMsg, p.chatTime);
             }
 
             // Draw Self
             var myImg = gameState.user.gender === "male" ? maleSpriteImg : femaleSpriteImg;
-            drawSprite(myImg, player.x, player.y, player.flip, gameState.user.name, gameState.user.gender);
+            drawSprite(myImg, player.x, player.y, player.flip, gameState.user.name, gameState.user.gender, player.chatMsg, player.chatTime);
         }
         
         requestAnimationFrame(animate);

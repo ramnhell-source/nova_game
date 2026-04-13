@@ -245,3 +245,50 @@ body, html {
     to { opacity: 1; }
 }
 
+/* Chat & Versioning */
+#bottom-ui {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    pointer-events: none;
+}
+
+#chat-box {
+    width: 100%;
+    pointer-events: auto;
+    margin-bottom: 10px;
+}
+
+#chat-input {
+    width: 100%;
+    background: rgba(10, 10, 25, 0.6);
+    border: 1px solid rgba(100, 204, 255, 0.3);
+    border-radius: 20px;
+    padding: 10px 20px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#chat-input:focus {
+    border-color: #00ccff;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.4);
+}
+
+#version-display {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(136, 153, 170, 0.5);
+    text-transform: uppercase;
+}
+

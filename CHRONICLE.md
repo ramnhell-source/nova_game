@@ -56,6 +56,16 @@
 - **Tech Stack:** Vanilla HTML / CSS (Legacy) / JavaScript (Strict ES5)
 - **Compatibility:** iOS 9.3.2 (iPad Mini 1) to iPhone 13 Pro Max
 - **Directory:** `/home/ramnhell/.gemini/antigravity/scratch/nova_game`
+- **GitHub Repo:** [ramnhell-source/nova_game](https://github.com/ramnhell-source/nova_game.git)
+- **Database:** [Neon Console](https://console.neon.tech/) (Check .env for credentials)
+
+---
+
+## 🛠 Standard Operating Procedures (Protocol)
+1. **Sync Protocol:** Every feature completion MUST be followed by a `git push`.
+2. **Database Integrity:** Ensure `SCHEMA.sql` is updated alongside any database changes. Do NOT store chat logs in the DB to save storage.
+3. **Agent Handoff:** Always update `CHRONICLE.md` before ending a session.
+4. **Environment Sync:** Remind the user to sync assets between Windows (Design) and Linux (Code) if applicable.
 
 ---
 
@@ -81,6 +91,9 @@
 - [x] Multiplayer Optimization: Zero-delay interpolation (v0.5.3).
 - [x] Sprite Correction: Fixed Male orientation (v0.5.3).
 - [x] LIVE URL: https://ornate-brioche-e291c7.netlify.app
+- [x] Live Chat: Real-time bubbles above players (v0.6.0).
+- [x] Movement Sync: Increased polling frequency to 500ms (v0.6.0).
+- [x] UI: Added chat input and versioning HUD (v0.6.0).
 
 ---
 
@@ -113,9 +126,23 @@
     - Real-time rendering of other active players on canvas.
 - **Infrastructure:** Updated `SCHEMA.sql` with position and heartbeat columns.
 
+### v0.6.0 - Live Chat & Interaction
+- **Features:**
+    - Live Chat system with pop-up bubbles appearing above player names.
+    - Chat stays for exactly 3 seconds before vanishing.
+    - PC: Accessible via "Enter" key (focus/send).
+    - Mobile: Accessible via "Type here" box.
+- **Optimization:**
+    - Heartbeat polling increased to 2Hz (500ms) for smoother live movements.
+    - Movement disabled while chat input is focused to prevent accidental travel.
+    - HUD: Added version display at bottom center.
+- **Infrastructure:**
+    - Modified `heartbeat` function to relay temporary chat messages without long-term history storage.
+    - Added `chat_msg` and `chat_at` columns to `users` table.
+
 ---
 
 ## 🚀 Next Steps
 1. **Habit System:** Start implementing the core RPG habit-tracker mechanics (Completing tasks for XP/Gold).
-2. **Expansion:** Allow character "Chat Bubbles" for real-time multiplayer interaction.
-3. **Optimizations:** Smooth out sprite movement with linear interpolation.
+2. **Expansion:** Implement world map boundaries and teleportation zones.
+3. **Advanced AI:** Simple NPC behaviors and interactable objects.
