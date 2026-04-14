@@ -133,6 +133,9 @@
         gameState.gold = user.gold || 0;
         gameState.spins = user.spins || 0;
 
+        // Global Chat History (v0.14.0)
+        gameState.chatLog = [];
+
         // Debug tools for testagent
         if (user.name === "testagent") {
             document.getElementById("btn-debug-reset").style.display = "inline-block";
@@ -176,6 +179,26 @@
         location.reload();
     }
 
+    function addChatLine(name, msg) {
+        if (!gameState.chatLog) gameState.chatLog = [];
+        gameState.chatLog.push({ name: name, msg: msg });
+        if (gameState.chatLog.length > 3) gameState.chatLog.shift();
+        renderChatHistory();
+    }
+
+    function renderChatHistory() {
+        var hist = document.getElementById("chat-history");
+        if (!hist) return;
+        hist.innerHTML = "";
+        for (var i = 0; i < gameState.chatLog.length; i++) {
+            var line = gameState.chatLog[i];
+            var div = document.createElement("div");
+            div.className = "chat-line";
+            div.innerHTML = "<b>" + line.name + ":</b> " + line.msg;
+            hist.appendChild(div);
+        }
+    }
+
     function startHeartbeat() {
         if (!gameState.authenticated) return;
         
@@ -192,20 +215,32 @@
                 for (var i = 0; i < activePlayers.length; i++) {
                     var p = activePlayers[i];
                     var existing = findOtherPlayer(p.id);
+                    var newTime = p.chat_at ? new Date(p.chat_at).getTime() : 0;
+
                     if (existing) {
+                        // Check for new message (History logic v0.14.0)
+                        if (p.chat_msg && newTime > existing.chatTime) {
+                            addChatLine(p.name, p.chat_msg);
+                        }
+
                         existing.targetX = p.pos_x;
                         existing.targetY = p.pos_y;
                         existing.name = p.name;
                         existing.gender = p.gender;
                         existing.chatMsg = p.chat_msg;
-                        existing.chatTime = p.chat_at ? new Date(p.chat_at).getTime() : 0;
+                        existing.chatTime = newTime;
                     } else {
                         p.currentX = p.pos_x;
                         p.currentY = p.pos_y;
                         p.targetX = p.pos_x;
                         p.targetY = p.pos_y;
                         p.chatMsg = p.chat_msg;
-                        p.chatTime = p.chat_at ? new Date(p.chat_at).getTime() : 0;
+                        p.chatTime = newTime;
+                        
+                        if (p.chat_msg && Date.now() - newTime < 3000) {
+                            addChatLine(p.name, p.chat_msg);
+                        }
+
                         otherPlayers.push(p);
                     }
                 }
@@ -316,6 +351,10 @@
                 player.chatMsg = text;
                 player.chatTime = Date.now();
                 player.newMsg = text; // Flag for heartbeat
+                
+                // Add to own history
+                addChatLine("You", text);
+                
                 input.value = "";
             }
             input.blur();
@@ -360,6 +399,11 @@
         document.getElementById("notif-btn").addEventListener("click", showNotifs);
         document.getElementById("btn-close-notif").addEventListener("click", function() {
             document.getElementById("notif-overlay").style.display = "none";
+        });
+
+        // Roll / Gacha Foundation (v0.14.0)
+        document.getElementById("roll-btn").addEventListener("click", function() {
+            alert("Gacha system coming soon! Current Spins: " + gameState.spins);
         });
     }
 

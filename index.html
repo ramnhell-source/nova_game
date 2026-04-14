@@ -21,8 +21,6 @@
                 <div id="profile-btn">
                     <div id="profile-pic"></div>
                 </div>
-                <div id="quest-btn" style="display:none;">Q</div>
-                <div id="eshop-btn" style="display:none;">E</div>
                 
                 <div id="stats-hud">
                     <div class="hud-text">GOLD: <span id="val-gold">0</span></div>
@@ -48,8 +46,8 @@
             </div>
             
             <!-- Top Right Navigation -->
-            <button id="notif-btn" class="top-right-glass" style="right: 130px;">NOTIFS 0</button>
             <button id="btn-logout" class="top-right-glass">LOGOUT</button>
+            <button id="notif-btn" class="top-right-glass notif-stack">NOTIFS 0</button>
         </div>
 
         <!-- Profile & Check-in Modal -->
@@ -104,7 +102,7 @@
         <!-- Centered UI Overlay -->
         <div id="ui-layout">
             <div id="splash-screen">
-                <div class="version-tag">v0.13.0</div>
+                <div class="version-tag">v0.14.0</div>
                 <h1 id="game-title">h a v e n</h1>
                 <p id="game-status">Connecting to Bridge...</p>
                 
@@ -147,12 +145,18 @@
 
         <!-- Chat & Version Overlay -->
         <div id="bottom-ui" style="display:none;">
+            <div id="hud-actions">
+                <div id="roll-btn" class="hud-action-btn">R</div>
+                <div id="quest-btn" class="hud-action-btn" style="display:none;">Q</div>
+                <div id="eshop-btn" class="hud-action-btn" style="display:none;">E</div>
+            </div>
             <div id="chat-box">
+                <div id="chat-history"></div>
                 <input type="text" id="chat-input" placeholder="Type here..." maxlength="50">
             </div>
-            <div id="version-display">v0.13.0</div>
+            <div id="version-display">v0.14.0</div>
         </div>
     </div>
-    <script src="game.js?v=0.13.0"></script>
+    <script src="game.js?v=0.14.0"></script>
 </body>
 </html>

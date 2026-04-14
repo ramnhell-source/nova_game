@@ -166,18 +166,11 @@ body, html {
     transition: transform 0.2s;
 }
 
-#quest-btn {
-    position: absolute;
-    top: 10px;
-    left: 85px;
-    z-index: 1000;
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 215, 0, 0.2);
-    border: 2px solid rgba(255, 215, 0, 0.5);
+#quest-btn, #eshop-btn, #roll-btn {
+    width: 50px;
+    height: 50px;
     border-radius: 12px;
-    color: #ffd700;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -186,36 +179,28 @@ body, html {
     pointer-events: auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s;
+    margin: 0 5px;
 }
 
-#quest-btn:hover {
-    transform: scale(1.05);
-    border-color: #ffffff;
+#quest-btn {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    color: #ffd700;
 }
 
 #eshop-btn {
-    position: absolute;
-    top: 10px;
-    left: 160px;
-    z-index: 1000;
-    width: 60px;
-    height: 60px;
     background: rgba(0, 204, 255, 0.2);
     border: 2px solid rgba(0, 204, 255, 0.5);
-    border-radius: 12px;
     color: #00ccff;
-    font-size: 24px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    pointer-events: auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: transform 0.2s;
 }
 
-#eshop-btn:hover {
+#roll-btn {
+    background: rgba(255, 68, 136, 0.2);
+    border: 2px solid rgba(255, 68, 136, 0.5);
+    color: #ff4488;
+}
+
+.hud-action-btn:hover {
     transform: scale(1.05);
     border-color: #ffffff;
 }
@@ -267,9 +252,9 @@ body, html {
     border: 1px solid rgba(100, 200, 255, 0.3);
     border-radius: 12px;
     padding: 15px;
-    min-width: 220px;
+    min-width: 200px;
     pointer-events: auto;
-    margin-left: 235px; /* Offset for Profile + Quest + EShop Buttons */
+    margin-left: 80px; /* Offset for Profile Button only */
     margin-top: 10px;
 }
 
@@ -320,10 +305,10 @@ body, html {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(255, 68, 136, 0.1);
-    border: 1px solid #ff4488;
-    color: #ff4488;
-    padding: 10px 20px;
+    background: rgba(10, 10, 30, 0.6);
+    border: 1px solid #4488ff;
+    color: #4488ff;
+    padding: 8px 16px;
     border-radius: 8px;
     font-size: 10px;
     letter-spacing: 2px;
@@ -333,11 +318,19 @@ body, html {
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: all 0.2s;
+    z-index: 1000;
+}
+
+.notif-stack {
+    top: 65px; /* Directly under Logout */
+    border-color: #ff4488;
+    color: #ff4488;
+    background: rgba(255, 68, 136, 0.1);
 }
 
 .top-right-glass:hover {
-    background: rgba(255, 68, 136, 0.3);
-    box-shadow: 0 0 10px rgba(255, 68, 136, 0.5);
+    background: rgba(100, 200, 255, 0.2);
+    box-shadow: 0 0 10px rgba(100, 200, 255, 0.4);
 }
 
 #mobile-controls {
@@ -386,21 +379,53 @@ body, html {
 /* Chat & Versioning */
 #bottom-ui {
     position: absolute;
-    bottom: 20px;
+    bottom: 10px;
     left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+    margin-left: -175px; /* Precise legacy centering for 350px width */
+    width: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
     pointer-events: none;
+    text-align: center;
+}
+
+#hud-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 #chat-box {
     width: 100%;
     pointer-events: auto;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+#chat-history {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 8px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-size: 12px;
+    color: #bbccdd;
+    pointer-events: none;
+}
+
+.chat-line {
+    margin: 2px 0;
+    opacity: 0;
+    -webkit-animation: fadeIn 0.3s forwards;
+    animation: fadeIn 0.3s forwards;
+}
+
+.chat-line b {
+    color: #00ccff;
 }
 
 #chat-input {

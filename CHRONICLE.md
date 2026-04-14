@@ -1,14 +1,16 @@
 # 🚀 RETURN COMMAND: "Review the Chronicle and integrate the new assets."
 
-# 💓 CHRONICLE HEARTBEAT: 3:16 PM - SYNC IS ACTIVE
+# 💓 CHRONICLE HEARTBEAT: 3:42 PM - SYNC IS ACTIVE
 # 📜 PROJECT CHRONICLE: H A V E N (Habit Tracker RPG)
 
 > [!IMPORTANT]
-> **🚀 SWITCHING TO WINDOWS (DESIGN PHASE)**
-> **Gemini Reminder:** "I am switching to Windows to design H A V E N sprites. The project logic is on Linux. Remind me to sync my sprite assets back to the H: Bridge when I'm done."
->
-> **Windows AI Agent Prompt:**
-> "Hi agent, I am continuing the H A V E N project from Linux. This is a Habit Tracker RPG for iPad Mini 1 (iOS 9.3.2, Strict ES5). I am here on Windows to design sprites. Read CHRONICLE.md on the H: drive to see the current state and strict code rules. Update this file live."
+> **💎 PROJECT ESSENTIALS**
+> - **LIVE URL:** https://nova-game-brown.vercel.app
+> - **DATABASE (Neon):** `postgresql://neondb_owner:npg_u9g0UDvdZcQX@ep-hidden-meadow-a1azjq00.ap-southeast-1.aws.neon.tech/neondb?sslmode=require`
+> - **REPO:** https://github.com/ramnhell-source/nova_game
+> - **STACK:** Vanilla JS (Strict ES5), Legacy CSS, Vercel Functions (api/)
+> - **TARGET:** iPad Mini 1 (1st Gen, iOS 9.3.2)
+> - **WORKSPACE:** `/home/ramnhell/.gemini/antigravity/scratch/nova_game/`
 
 ---
 
@@ -230,7 +232,6 @@
     - Created `irl_quests` table to track social interations.
     - Implemented `buyIRLQuest`, `getIRLQuests`, and `completeIRLQuest` endpoints.
     - Shifted Gold/Spins HUD to the top-left sidebar for better hierarchy.
-
 ### v0.13.1 - Vercel Migration & Infra Stabilization
 - **Infrastructure:**
     - Fully migrated backend from Netlify to **Vercel**.
@@ -243,7 +244,19 @@
 
 ---
 
+### v0.14.0 - UI Centering & Gacha Foundation
+- **UI Architecture:**
+    - Repositioned 'Type here' input to absolute **bottom-center** for better symmetry.
+    - Re-stacked action buttons (Quest, E-Shop, Roll) into a centered cluster above the chat box.
+    - Vertically aligned Top-Right HUD (Logout above Notifs) to clear space.
+- **Features:**
+    - **Conversation History:** Implemented a real-time chat log that tracks and displays the 3 latest messages from all players.
+    - **Gacha Prep:** Added the '**R**' (Roll) button to the HUD as a foundation for the upcoming Spin system.
+- **Legacy Compatibility:** Utilized `margin: 0 auto` and fixed width patterns for centering to ensure stability on iOS 9.3.2.
+
+---
+
 ## 🚀 Next Steps
-1. **Habit System:** Start implementing the core RPG habit-tracker mechanics (Completing tasks for XP/Gold).
-2. **Expansion:** Implement world map boundaries and teleportation zones.
-3. **Advanced AI:** Simple NPC behaviors and interactable objects.
+1. **Gacha System:** Implement the actual Spin/Roll logic with rewards.
+2. **Habit System:** Start implementing core RPG habit-tracker mechanics.
+3. **Expansion:** Implement world map boundaries and teleportation zones.
