@@ -256,6 +256,18 @@
 
 ---
 
+### v0.14.1 - HUD Restructure & Hotkeys
+- **UI Architecture:**
+    - Restored Top-Left Cluster: **Profile > Q > E > R** buttons aligned horizontally.
+    - Moved Mobile Controls to **Bottom-Left** corner.
+    - Relocated Chat Engine to **Bottom-Right** corner for ergonomic layout.
+- **Controls:**
+    - **Keyboard Hotkeys:** Implemented 'Q' (Quest), 'E' (E-Shop), and 'R' (Roll) keys for quick toggle.
+    - **Chat UI:** Added a physical 'Send' button and optimized the rolling history layout.
+- **Legacy Compatibility:** Pinned all UI elements using `position: absolute` with 20px offsets to ensure visibility on iPad Mini 1 (1024x768).
+
+---
+
 ## 🚀 Next Steps
 1. **Gacha System:** Implement the actual Spin/Roll logic with rewards.
 2. **Habit System:** Start implementing core RPG habit-tracker mechanics.

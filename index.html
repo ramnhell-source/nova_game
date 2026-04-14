@@ -21,6 +21,9 @@
                 <div id="profile-btn">
                     <div id="profile-pic"></div>
                 </div>
+                <div id="quest-btn" style="display:none;" class="hud-btn-top">Q</div>
+                <div id="eshop-btn" style="display:none;" class="hud-btn-top">E</div>
+                <div id="roll-btn" style="display:none;" class="hud-btn-top">R</div>
                 
                 <div id="stats-hud">
                     <div class="hud-text">GOLD: <span id="val-gold">0</span></div>
@@ -102,7 +105,7 @@
         <!-- Centered UI Overlay -->
         <div id="ui-layout">
             <div id="splash-screen">
-                <div class="version-tag">v0.14.0</div>
+                <div class="version-tag">v0.14.1</div>
                 <h1 id="game-title">h a v e n</h1>
                 <p id="game-status">Connecting to Bridge...</p>
                 
@@ -137,26 +140,24 @@
             </div>
         </div>
 
-        <!-- Mobile Controls -->
+        <!-- Mobile Controls (Bottom Left) -->
         <div id="mobile-controls" style="display:none;">
             <button id="btn-left" class="ctrl-btn">◀</button>
             <button id="btn-right" class="ctrl-btn">▶</button>
         </div>
 
-        <!-- Chat & Version Overlay -->
+        <!-- Chat & Version Overlay (Bottom Right) -->
         <div id="bottom-ui" style="display:none;">
-            <div id="hud-actions">
-                <div id="roll-btn" class="hud-action-btn">R</div>
-                <div id="quest-btn" class="hud-action-btn" style="display:none;">Q</div>
-                <div id="eshop-btn" class="hud-action-btn" style="display:none;">E</div>
-            </div>
             <div id="chat-box">
                 <div id="chat-history"></div>
-                <input type="text" id="chat-input" placeholder="Type here..." maxlength="50">
+                <div class="chat-input-row">
+                    <input type="text" id="chat-input" placeholder="Type here..." maxlength="50">
+                    <button id="btn-chat-send">Send</button>
+                </div>
             </div>
-            <div id="version-display">v0.14.0</div>
+            <div id="version-display">v0.14.1</div>
         </div>
     </div>
-    <script src="game.js?v=0.14.0"></script>
+    <script src="game.js?v=0.14.1"></script>
 </body>
 </html>

@@ -167,10 +167,13 @@ body, html {
 }
 
 #quest-btn, #eshop-btn, #roll-btn {
-    width: 50px;
-    height: 50px;
+    position: absolute;
+    top: 10px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
     border-radius: 12px;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -179,28 +182,30 @@ body, html {
     pointer-events: auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s;
-    margin: 0 5px;
 }
 
 #quest-btn {
+    left: 85px;
     background: rgba(255, 215, 0, 0.2);
     border: 2px solid rgba(255, 215, 0, 0.5);
     color: #ffd700;
 }
 
 #eshop-btn {
+    left: 160px;
     background: rgba(0, 204, 255, 0.2);
     border: 2px solid rgba(0, 204, 255, 0.5);
     color: #00ccff;
 }
 
 #roll-btn {
+    left: 235px;
     background: rgba(255, 68, 136, 0.2);
     border: 2px solid rgba(255, 68, 136, 0.5);
     color: #ff4488;
 }
 
-.hud-action-btn:hover {
+#quest-btn:hover, #eshop-btn:hover, #roll-btn:hover {
     transform: scale(1.05);
     border-color: #ffffff;
 }
@@ -252,9 +257,9 @@ body, html {
     border: 1px solid rgba(100, 200, 255, 0.3);
     border-radius: 12px;
     padding: 15px;
-    min-width: 200px;
+    min-width: 220px;
     pointer-events: auto;
-    margin-left: 80px; /* Offset for Profile Button only */
+    margin-left: 310px; /* Offset for Profile + Q + E + R Cluster */
     margin-top: 10px;
 }
 
@@ -335,23 +340,26 @@ body, html {
 
 #mobile-controls {
     position: absolute;
-    bottom: 40px;
-    width: 100%;
+    bottom: 20px;
+    left: 20px;
+    width: auto;
     display: flex;
-    justify-content: space-between;
-    padding: 0 40px;
+    justify-content: flex-start;
+    padding: 0;
     box-sizing: border-box;
     pointer-events: none;
+    z-index: 1000;
 }
 
 .ctrl-btn {
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(100, 204, 255, 0.2);
-    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+    background: rgba(10, 10, 25, 0.8);
+    border: 2px solid rgba(0, 204, 255, 0.5);
+    border-radius: 12px;
     color: #00ccff;
-    font-size: 32px;
+    font-size: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -359,6 +367,7 @@ body, html {
     outline: none;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .ctrl-btn:active {
@@ -379,22 +388,15 @@ body, html {
 /* Chat & Versioning */
 #bottom-ui {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    margin-left: -175px; /* Precise legacy centering for 350px width */
-    width: 350px;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     pointer-events: none;
-    text-align: center;
-}
-
-#hud-actions {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 15px;
+    text-align: right;
+    z-index: 1000;
 }
 
 #chat-box {
@@ -429,18 +431,33 @@ body, html {
 }
 
 #chat-input {
-    width: 100%;
-    background: rgba(10, 10, 25, 0.6);
+    flex: 1;
+    background: rgba(10, 10, 25, 0.8);
     border: 1px solid rgba(100, 204, 255, 0.3);
-    border-radius: 20px;
-    padding: 10px 20px;
+    border-radius: 8px 0 0 8px;
+    padding: 10px 15px;
     color: #ffffff;
     font-size: 14px;
     outline: none;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.chat-input-row {
+    display: flex;
+    width: 100%;
+}
+
+#btn-chat-send {
+    background: #0088ff;
+    border: none;
+    color: #ffffff;
+    padding: 0 15px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 #chat-input:focus {

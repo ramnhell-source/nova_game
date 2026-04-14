@@ -397,14 +397,40 @@
         document.getElementById("btn-confirm-tft").addEventListener("click", confirmTFTRequest);
 
         document.getElementById("notif-btn").addEventListener("click", showNotifs);
-        document.getElementById("btn-close-notif").addEventListener("click", function() {
-            document.getElementById("notif-overlay").style.display = "none";
-        });
-
         // Roll / Gacha Foundation (v0.14.0)
-        document.getElementById("roll-btn").addEventListener("click", function() {
-            alert("Gacha system coming soon! Current Spins: " + gameState.spins);
+        document.getElementById("roll-btn").addEventListener("click", toggleRoll);
+        document.getElementById("roll-btn").style.display = "flex";
+
+        document.getElementById("btn-chat-send").addEventListener("click", sendChat);
+
+        setupHotkeys();
+    }
+
+    function setupHotkeys() {
+        window.addEventListener("keydown", function(e) {
+            if (!gameState.authenticated || document.activeElement.tagName === "INPUT") return;
+            
+            var key = e.key.toLowerCase();
+            if (key === "q") toggleQuests();
+            if (key === "e") toggleEShop();
+            if (key === "r") toggleRoll();
         });
+    }
+
+    function toggleQuests() {
+        var overlay = document.getElementById("quest-overlay");
+        if (overlay.style.display === "none") showQuests();
+        else overlay.style.display = "none";
+    }
+
+    function toggleEShop() {
+        var overlay = document.getElementById("eshop-overlay");
+        if (overlay.style.display === "none") showEShop();
+        else overlay.style.display = "none";
+    }
+
+    function toggleRoll() {
+        alert("Gacha system coming soon! Current Spins: " + gameState.spins);
     }
 
     function showCheckin() {
