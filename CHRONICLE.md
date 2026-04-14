@@ -62,11 +62,10 @@
 ---
 
 ## 🛠 Standard Operating Procedures (Protocol)
-> [!IMPORTANT]
 > **🚀 CRITICAL DEPLOYMENT WORKFLOW**
 > After EVERY code change:
 > 1. **Commit & Push:** Immediately run `git add . && git commit -m "..." && git push origin master`.
-> 2. **Monitor Deploy:** Provide the user with the [Netlify Deploys Link](https://app.netlify.com/projects/ornate-brioche-e291c7/deploys) so they can verify the live build.
+> 2. **Monitor Deploy:** Provide the user with the [Vercel Dashboard Link](https://vercel.com/ramnhell-source/nova-game/deployments) so they can verify the live build.
 > 3. **Chronicle:** Update this file only AFTER the code is pushed.
 
 1. **Sync Protocol:** Every feature completion MUST be followed by a `git push`.
@@ -97,7 +96,7 @@
 - [x] Production Sync: Pushed and Deployed (v0.5.2).
 - [x] Multiplayer Optimization: Zero-delay interpolation (v0.5.3).
 - [x] Sprite Correction: Fixed Male orientation (v0.5.3).
-- [x] LIVE URL: https://ornate-brioche-e291c7.netlify.app
+- [x] LIVE URL: https://nova-game-brown.vercel.app
 - [x] Live Chat: Real-time bubbles above players (v0.6.0).
 - [x] Movement Sync: Hyper-speed polling frequency (300ms) for real-time feel (v0.6.1).
 - [x] UI: Added chat input and versioning HUD (v0.6.0).
@@ -231,6 +230,16 @@
     - Created `irl_quests` table to track social interations.
     - Implemented `buyIRLQuest`, `getIRLQuests`, and `completeIRLQuest` endpoints.
     - Shifted Gold/Spins HUD to the top-left sidebar for better hierarchy.
+
+### v0.13.1 - Vercel Migration & Infra Stabilization
+- **Infrastructure:**
+    - Fully migrated backend from Netlify to **Vercel**.
+    - Converted all 12 Netlify Functions to Vercel `/api` serverless handler format.
+    - Successfully re-linked GitHub as the primary deployment source.
+- **Optimization:**
+    - Resolved Netlify "Site Paused" usage limits by shifting to Vercel's higher execution threshold.
+    - Verified **Neon DB** connection stability via Vercel Environment Variables.
+- **Updated LIVE URL:** https://nova-game-brown.vercel.app
 
 ---
 
